@@ -26,6 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 require_once(dirname(dirname(__DIR__)) . '/config.php');
 
+/**
+ * HTML hook to add the restrictions on unpaid A/R.
+ */
 function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
 
     global $USER;
@@ -56,19 +59,50 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
 
                     $activityrecord = $PAGE->activityrecord;
 
-                    
                     $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/leeloo_ar_restrict/js/custom.js'));
 
-                    $leeloodiv = "<div class='leeloo_ar_div' id='leeloo_ar_div_$productid'><h1 class='leeloo_ar_price'>Paid Activity.</h1><a class='leeloo_ar_cert' id='leeloo_ar_cert_$productid' data-toggle='modal' data-target='#leelooModal_$productid' href='https://leeloolxp.com/products-listing/product/$urlalias?session_id=$jsessionid'>Buy Now</a></div>";
+                    $buytext = get_string('buy', 'local_leeloo_ar_restrict');
 
-                    $leeloomodal = "<div class='modal fade leeloo_paid_ar_modal' tabindex='-1' aria-labelledby='gridSystemModalLabel' id='leelooModal_$productid' role='dialog' style='max-width: 90%;'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><h4 class='modal-title'>$activityname</h4><button type='button' class='close' data-dismiss='modal'>&times;</button></div><div class='modal-body'></div></div></div></div><style>.leeloo_ar_frame {width: 100%;height: 50vh;border: 0;}</style><style>body #region-main,body #region-main.has-blocks{display:none;}</style>";
+                    $leeloodiv = "<div class='leeloo_ar_div' id='leeloo_ar_div_$productid'>
+                        <h1 class='leeloo_ar_price'>Paid Activity.</h1>
+                        <a
+                            class='leeloo_ar_cert'
+                            id='leeloo_ar_cert_$productid'
+                            data-toggle='modal'
+                            data-target='#leelooModal_$productid'
+                            href='https://leeloolxp.com/products-listing/product/$urlalias?session_id=$jsessionid'>
+                            $buytext
+                        </a>
+                    </div>";
+
+                    $leeloomodal = "
+                    <div
+                    class='modal fade leeloo_paid_ar_modal'
+                    tabindex='-1'
+                    aria-labelledby='gridSystemModalLabel'
+                    id='leelooModal_$productid'
+                    role='dialog'
+                    style='max-width: 90%;'>
+                        <div class='modal-dialog'>
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <h4 class='modal-title'>$activityname</h4>
+                                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                                </div>
+                                <div class='modal-body'></div>
+                            </div>
+                        </div>
+                    </div>
+                    <style>.leeloo_ar_frame {width: 100%;height: 50vh;border: 0;}</style>
+                    <style>body #region-main,body #region-main.has-blocks{display:none;}</style>";
 
                     $activityrecord->content = $leeloodiv . $leeloomodal;
                     $activityrecord->intro = $leeloodiv . $leeloomodal;
 
                     $PAGE->set_activity_record($activityrecord);
 
-                    $js2 = 'document.getElementById("region-main").style.display = "inline-block";document.getElementById("region-main").innerHTML = "' . $leeloodiv . $leeloomodal . '";';
+                    $js2 = 'document.getElementById("region-main").style.display = "inline-block";
+                    document.getElementById("region-main").innerHTML = "' . $leeloodiv . $leeloomodal . '";';
 
                     $PAGE->requires->js_init_code("$js2");
                 }
@@ -76,4 +110,3 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
         }
     }
 }
-?>

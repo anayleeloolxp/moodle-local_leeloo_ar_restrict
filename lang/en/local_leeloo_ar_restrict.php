@@ -34,3 +34,4 @@ $string['vendorkey_help'] = 'Leeloo LXP Vendor Key';
 $string['nolicense'] = 'Invalid Leeloo LXP License ID';
 $string['novendor'] = 'Invalid Leeloo LXP Vendor Key';
 $string['license'] = 'Leeloo LXP License ID';
+$string['buy'] = 'Buy Now';
