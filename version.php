@@ -30,3 +30,7 @@ $plugin->release = '0.1.0';
 $plugin->version = 2020050500;
 $plugin->requires = 2019052000;
 $plugin->maturity = MATURITY_STABLE;
+$plugin->dependencies = array(
+    'auth_leeloo_pay_sso' => 2020022105,
+    'tool_leeloo_ar_sync' => 2019062700
+);
