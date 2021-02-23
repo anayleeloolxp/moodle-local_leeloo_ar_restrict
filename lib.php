@@ -43,7 +43,7 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
         $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/leeloo_ar_restrict/js/custom.js'));
 
         $cm = $PAGE->cm;
-        if ($cm->id) {
+        if (isset($cm->id) && isset($cm->id) != '') {
             $leelooarsync = $DB->get_record_sql('SELECT * FROM {tool_leeloo_ar_sync} WHERE enabled = 1 AND courseid = ' . $cm->id);
             if ($leelooarsync) {
                 $userid = $USER->id;
@@ -62,18 +62,31 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
                     $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/leeloo_ar_restrict/js/custom.js'));
 
                     $buytext = get_string('buy', 'local_leeloo_ar_restrict');
+                    $alink = "https://leeloolxp.com/products-listing/product/$urlalias?session_id=$jsessionid";
 
-                    $leeloodiv = "<div class='leeloo_ar_div' id='leeloo_ar_div_$productid'><h1 class='leeloo_ar_price'>Paid Activity.</h1><a class='leeloo_ar_cert' id='leeloo_ar_cert_$productid' data-toggle='modal' data-target='#leelooModal_$productid' href='https://leeloolxp.com/products-listing/product/$urlalias?session_id=$jsessionid'>$buytext</a></div>";
+                    $leeloodiv = "<div class='leeloo_ar_div' id='leeloo_ar_div_$productid'>";
+                    $leeloodiv .= "<h1 class='leeloo_ar_price'>Paid Activity.</h1>";
+                    $leeloodiv .= "<a class='leeloo_ar_cert' id='leeloo_ar_cert_$productid' data-toggle='modal' data-target='#leelooModal_$productid' href='$alink'>$buytext";
+                    $leeloodiv .= "</a></div>";
 
-                    $leeloomodal = "<div class='modal fade leeloo_paid_ar_modal' tabindex='-1' aria-labelledby='gridSystemModalLabel' id='leelooModal_$productid' role='dialog' style='max-width: 90%;'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><h4 class='modal-title'>$activityname</h4><button type='button' class='close' data-dismiss='modal'>&times;</button></div><div class='modal-body'></div></div></div></div><style>.leeloo_ar_frame {width: 100%;height: 50vh;border: 0;}</style><style>body #region-main,body #region-main.has-blocks{display:none;}</style>";
+                    $regincss = "<style>body #region-main,body #region-main.has-blocks{display:none;}</style>";
+                    $framcecss = "<style>.leeloo_ar_frame {width: 100%;height: 50vh;border: 0;}</style>";
+                    $headbutton = "<h4 class='modal-title'>$activityname</h4><button type='button' class='close' data-dismiss='modal'>&times;</button>";
+
+                    $aria = "aria-labelledby='gridSystemModalLabel'";
+
+                    $leeloomodal = "";
+                    $leeloomodal .= "<div class='modal fade leeloo_paid_ar_modal' tabindex='-1' $aria id='leelooModal_$productid' role='dialog' style='max-width: 100%;'>";
+                    $leeloomodal .= "<div class='modal-dialog'><div class='modal-content'>";
+                    $leeloomodal .= "<div class='modal-header'>$headbutton</div><div class='modal-body'></div></div></div></div>$framcecss $regincss";
 
                     $activityrecord->content = '';
                     $activityrecord->intro = '';
 
                     $PAGE->set_activity_record($activityrecord);
 
-                    $js2 = 'document.getElementById("region-main").style.display = "none";
-                    document.getElementById("region-main").insertAdjacentHTML("afterend", "' . $leeloodiv . $leeloomodal . '")';
+                    $regionjs = 'document.getElementById("region-main").style.display = "none";';
+                    $js2 = $regionjs . 'document.getElementById("region-main").insertAdjacentHTML("afterend", "' . $leeloodiv . $leeloomodal . '")';
 
                     $PAGE->requires->js_init_code("$js2");
                 }
