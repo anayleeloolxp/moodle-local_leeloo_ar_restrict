@@ -37,7 +37,7 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
     global $CFG;
     global $SESSION;
 
-    $useremail = $USER->email;
+    @$useremail = $USER->email;
 
     if ($useremail != '' && $useremail != 'root@localhost' && !is_siteadmin()) {
         $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/leeloo_ar_restrict/js/custom.js'));
