@@ -65,7 +65,7 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
                     $alink = "https://leeloolxp.com/products-listing/product/$urlalias?session_id=$jsessionid";
 
                     $leeloodiv = "<div class='leeloo_ar_div' id='leeloo_ar_div_$productid'>";
-                    $leeloodiv .= "<h1 class='leeloo_ar_price'>Paid Activity.</h1>";
+                    $leeloodiv .= "<h1 class='leeloo_ar_price'>".get_string('paidar', 'local_leeloo_ar_restrict')."</h1>";
                     $leeloodiv .= "<a class='leeloo_ar_cert' id='leeloo_ar_cert_$productid' data-toggle='modal' data-target='#leelooModal_$productid' href='$alink'>$buytext";
                     $leeloodiv .= "</a></div>";
 
