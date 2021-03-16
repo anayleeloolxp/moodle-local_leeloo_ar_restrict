@@ -44,10 +44,10 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
 
         $cm = $PAGE->cm;
         if (isset($cm->id) && isset($cm->id) != '') {
-            $leelooarsync = $DB->get_record_sql('SELECT * FROM {tool_leeloo_ar_sync} WHERE enabled = 1 AND courseid = ' . $cm->id);
+            $leelooarsync = $DB->get_record_sql('SELECT * FROM {tool_leeloo_ar_sync} WHERE enabled = ? AND courseid = ?', [1, $cm->id]);
             if ($leelooarsync) {
                 $userid = $USER->id;
-                $leelooarpurchased = $DB->get_record_sql('SELECT * FROM {tool_leeloo_ar_sync_restrict} WHERE userid = "' . $userid . '" AND arid = "' . $cm->id . '"');
+                $leelooarpurchased = $DB->get_record_sql('SELECT * FROM {tool_leeloo_ar_sync_restrict} WHERE userid = ? AND arid = ?', [$userid, $cm->id]);
                 if (!$leelooarpurchased) {
                     $activityname = $cm->get_formatted_name();
                     $productid = $leelooarsync->productid;
