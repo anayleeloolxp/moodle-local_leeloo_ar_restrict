@@ -15,25 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin strings are defined here.
+ * Privacy Subsystem implementation for local_leeloo_ar_restrict.
  *
- * @package     local_leeloo_ar_restrict
+ * @package   local_leeloo_ar_restrict
  * @copyright  2020 Leeloo LXP (https://leeloolxp.com)
  * @author     Leeloo LXP <info@leeloolxp.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_leeloo_ar_restrict\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Leeloo LXP A/R Restrict';
-$string['setting_title'] = 'Leeloo LXP A/R Restrict';
+/**
+ * Privacy Subsystem for local_leeloo_ar_restrict implementing null_provider.
+ *
+ * @copyright  2020 Leeloo LXP (https://leeloolxp.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements \core_privacy\local\metadata\null_provider {
 
-$string['vendorkey'] = 'Leeloo LXP Vendor Key';
-$string['vendorkey_help'] = 'Leeloo LXP Vendor Key';
-
-$string['nolicense'] = 'Invalid Leeloo LXP License ID';
-$string['novendor'] = 'Invalid Leeloo LXP Vendor Key';
-$string['license'] = 'Leeloo LXP License ID';
-$string['buy'] = 'Buy Now';
-
-$string['privacy:metadata'] = 'The Leeloo LXP A/R Restrict plugin does not store data itself.';
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason(): string {
+        return 'privacy:metadata';
+    }
+}
