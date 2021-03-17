@@ -40,6 +40,35 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
     @$useremail = $USER->email;
 
     if ($useremail != '' && $useremail != 'root@localhost' && !is_siteadmin()) {
+
+
+        $leeloolxplicense = get_config('local_leeloo_ar_restrict')->license;
+
+        $url = 'https://leeloolxp.com/api_moodle.php/?action=page_info';
+        $postdata = [
+            'license_key' => $leeloolxplicense,
+        ];
+
+        $curl = new curl;
+
+        $options = array(
+            'CURLOPT_RETURNTRANSFER' => true,
+            'CURLOPT_HEADER' => false,
+            'CURLOPT_POST' => count($postdata),
+        );
+
+        if (!$output = $curl->post($url, $postdata, $options)) {
+            return;
+        }
+
+        $infoleeloolxp = json_decode($output);
+
+        if ($infoleeloolxp->status != 'false') {
+            $leeloolxpurl = $infoleeloolxp->data->install_url;
+        } else {
+            return;
+        }
+
         $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/leeloo_ar_restrict/js/custom.js'));
 
         $cm = $PAGE->cm;
