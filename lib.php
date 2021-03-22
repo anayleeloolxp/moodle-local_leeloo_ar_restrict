@@ -27,6 +27,50 @@ defined('MOODLE_INTERNAL') || die();
 require_once(dirname(dirname(__DIR__)) . '/config.php');
 
 /**
+ * Function to get Leeloo Install
+ *
+ * @return string leeloo url
+ */
+function local_leeloo_ar_restrict_get_leelooinstall() {
+
+    global $SESSION;
+
+    if (isset($SESSION->arresleelooinstall)) {
+        return $SESSION->arresleelooinstall;
+    }
+
+    $leeloolxplicense = get_config('local_leeloo_ar_restrict')->license;
+
+    $url = 'https://leeloolxp.com/api_moodle.php/?action=page_info';
+    $postdata = [
+        'license_key' => $leeloolxplicense,
+    ];
+
+    $curl = new curl;
+    $options = array(
+        'CURLOPT_RETURNTRANSFER' => true,
+        'CURLOPT_HEADER' => false,
+        'CURLOPT_POST' => count($postdata),
+    );
+
+    if (!$output = $curl->post($url, $postdata, $options)) {
+        $arresleelooinstallurl = 'no';
+        $SESSION->arresleelooinstall = $arresleelooinstallurl;
+    }
+
+    $infoteamnio = json_decode($output);
+    if ($infoteamnio->status != 'false') {
+        $arresleelooinstallurl = $infoteamnio->data->install_url;
+        $SESSION->arresleelooinstall = $arresleelooinstallurl;
+    } else {
+        $arresleelooinstallurl = 'no';
+        $SESSION->arresleelooinstall = $arresleelooinstallurl;
+    }
+
+    return $arresleelooinstallurl;
+}
+
+/**
  * HTML hook to add the restrictions on unpaid A/R.
  */
 function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
@@ -41,32 +85,10 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
 
     if ($useremail != '' && $useremail != 'root@localhost' && !is_siteadmin()) {
 
+        $leeloolxpurl = local_leeloo_ar_restrict_get_leelooinstall();
 
-        $leeloolxplicense = get_config('local_leeloo_ar_restrict')->license;
-
-        $url = 'https://leeloolxp.com/api_moodle.php/?action=page_info';
-        $postdata = [
-            'license_key' => $leeloolxplicense,
-        ];
-
-        $curl = new curl;
-
-        $options = array(
-            'CURLOPT_RETURNTRANSFER' => true,
-            'CURLOPT_HEADER' => false,
-            'CURLOPT_POST' => count($postdata),
-        );
-
-        if (!$output = $curl->post($url, $postdata, $options)) {
-            return;
-        }
-
-        $infoleeloolxp = json_decode($output);
-
-        if ($infoleeloolxp->status != 'false') {
-            $leeloolxpurl = $infoleeloolxp->data->install_url;
-        } else {
-            return;
+        if ($leeloolxpurl == 'no') {
+            return true;
         }
 
         $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/leeloo_ar_restrict/js/custom.js'));
