@@ -91,7 +91,7 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
             return true;
         }
 
-        $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/leeloo_ar_restrict/js/custom.js'));
+        $PAGE->requires->js(new moodle_url('/local/leeloo_ar_restrict/js/custom.js'));
 
         $cm = $PAGE->cm;
         if (isset($cm->id) && isset($cm->id) != '') {
@@ -110,7 +110,7 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
 
                     $activityrecord = $PAGE->activityrecord;
 
-                    $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/leeloo_ar_restrict/js/custom.js'));
+                    $PAGE->requires->js(new moodle_url('/local/leeloo_ar_restrict/js/custom.js'));
 
                     $buytext = get_string('buy', 'local_leeloo_ar_restrict');
                     $alink = "https://leeloolxp.com/products-listing/product/$urlalias?session_id=$jsessionid";
