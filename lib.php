@@ -34,6 +34,8 @@ require_once(dirname(dirname(__DIR__)) . '/config.php');
 function local_leeloo_ar_restrict_get_leelooinstall() {
 
     global $SESSION;
+    global $CFG;
+    require_once($CFG->dirroot . '/lib/filelib.php');
 
     if (isset($SESSION->arresleelooinstall)) {
         return $SESSION->arresleelooinstall;
