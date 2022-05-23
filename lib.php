@@ -97,10 +97,10 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
 
         $cm = $PAGE->cm;
         if (isset($cm->id) && isset($cm->id) != '') {
-            $leelooarsync = $DB->get_record_sql('SELECT * FROM {tool_leeloo_ar_sync} WHERE enabled = ? AND courseid = ?', [1, $cm->id]);
+            $leelooarsync = $DB->get_record_sql("SELECT * FROM {tool_leeloo_ar_sync} WHERE enabled = ? AND courseid = ?", [1, $cm->id]);
             if ($leelooarsync) {
                 $userid = $USER->id;
-                $leelooarpurchased = $DB->get_record_sql('SELECT * FROM {tool_leeloo_ar_sync_restrict} WHERE userid = ? AND arid = ?', [$userid, $cm->id]);
+                $leelooarpurchased = $DB->get_record_sql("SELECT * FROM {tool_leeloo_ar_sync_restrict} WHERE userid = ? AND arid = ?", [$userid, $cm->id]);
                 if (!$leelooarpurchased) {
                     $activityname = $cm->get_formatted_name();
                     $productid = $leelooarsync->productid;
@@ -118,7 +118,7 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
                     $alink = "https://leeloolxp.com/products-listing/product/$urlalias?session_id=$jsessionid";
 
                     $leeloodiv = "<div class='leeloo_ar_div' id='leeloo_ar_div_$productid'>";
-                    $leeloodiv .= "<h1 class='leeloo_ar_price'>".get_string('paidar', 'local_leeloo_ar_restrict')."</h1>";
+                    $leeloodiv .= "<h1 class='leeloo_ar_price'>" . get_string('paidar', 'local_leeloo_ar_restrict') . "</h1>";
                     $leeloodiv .= "<a class='leeloo_ar_cert' id='leeloo_ar_cert_$productid' data-toggle='modal' data-target='#leelooModal_$productid' href='$alink'>$buytext";
                     $leeloodiv .= "</a></div>";
 

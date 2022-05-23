@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_leeloo_ar_restrict';
 $plugin->release = '0.1.0';
-$plugin->version = 2022050501;
+$plugin->version = 2022052300;
 $plugin->requires = 2019052000;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->dependencies = array(
