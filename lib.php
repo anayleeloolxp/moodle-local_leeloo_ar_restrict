@@ -23,9 +23,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-require_once(dirname(dirname(__DIR__)) . '/config.php');
-
 /**
  * Function to get Leeloo Install
  *
@@ -97,10 +94,16 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
 
         $cm = $PAGE->cm;
         if (isset($cm->id) && isset($cm->id) != '') {
-            $leelooarsync = $DB->get_record_sql("SELECT * FROM {tool_leeloo_ar_sync} WHERE enabled = ? AND courseid = ?", [1, $cm->id]);
+            $leelooarsync = $DB->get_record_sql(
+                "SELECT * FROM {tool_leeloo_ar_sync} WHERE enabled = ? AND courseid = ?",
+                [1, $cm->id]
+            );
             if ($leelooarsync) {
                 $userid = $USER->id;
-                $leelooarpurchased = $DB->get_record_sql("SELECT * FROM {tool_leeloo_ar_sync_restrict} WHERE userid = ? AND arid = ?", [$userid, $cm->id]);
+                $leelooarpurchased = $DB->get_record_sql(
+                    "SELECT * FROM {tool_leeloo_ar_sync_restrict} WHERE userid = ? AND arid = ?",
+                    [$userid, $cm->id]
+                );
                 if (!$leelooarpurchased) {
                     $activityname = $cm->get_formatted_name();
                     $productid = $leelooarsync->productid;
@@ -119,19 +122,23 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
 
                     $leeloodiv = "<div class='leeloo_ar_div' id='leeloo_ar_div_$productid'>";
                     $leeloodiv .= "<h1 class='leeloo_ar_price'>" . get_string('paidar', 'local_leeloo_ar_restrict') . "</h1>";
-                    $leeloodiv .= "<a class='leeloo_ar_cert' id='leeloo_ar_cert_$productid' data-toggle='modal' data-target='#leelooModal_$productid' href='$alink'>$buytext";
+                    $leeloodiv .= "<a class='leeloo_ar_cert' id='leeloo_ar_cert_$productid' " .
+                        "data-toggle='modal' data-target='#leelooModal_$productid' href='$alink'>$buytext";
                     $leeloodiv .= "</a></div>";
 
                     $regincss = "<style>body #region-main,body #region-main.has-blocks{display:none;}</style>";
                     $framcecss = "<style>.leeloo_ar_frame {width: 100%;height: 50vh;border: 0;}</style>";
-                    $headbutton = "<h4 class='modal-title'>$activityname</h4><button type='button' class='close' data-dismiss='modal'>&times;</button>";
+                    $headbutton = "<h4 class='modal-title'>$activityname</h4>" .
+                        "<button type='button' class='close' data-dismiss='modal'>&times;</button>";
 
                     $aria = "aria-labelledby='gridSystemModalLabel'";
 
                     $leeloomodal = "";
-                    $leeloomodal .= "<div class='modal fade leeloo_paid_ar_modal' tabindex='-1' $aria id='leelooModal_$productid' role='dialog' style='max-width: 100%;'>";
+                    $leeloomodal .= "<div class='modal fade leeloo_paid_ar_modal' " .
+                        "tabindex='-1' $aria id='leelooModal_$productid' role='dialog' style='max-width: 100%;'>";
                     $leeloomodal .= "<div class='modal-dialog'><div class='modal-content'>";
-                    $leeloomodal .= "<div class='modal-header'>$headbutton</div><div class='modal-body'></div></div></div></div>$framcecss $regincss";
+                    $leeloomodal .= "<div class='modal-header'>" . $headbutton .
+                        "</div><div class='modal-body'></div></div></div></div>$framcecss $regincss";
 
                     $activityrecord->content = '';
                     $activityrecord->intro = '';
@@ -139,7 +146,9 @@ function local_leeloo_ar_restrict_before_standard_top_of_body_html() {
                     $PAGE->set_activity_record($activityrecord);
 
                     $regionjs = 'document.getElementById("region-main").style.display = "none";';
-                    $js2 = $regionjs . 'document.getElementById("region-main").insertAdjacentHTML("afterend", "' . $leeloodiv . $leeloomodal . '")';
+
+                    $js2 = $regionjs . 'document.getElementById("region-main").insertAdjacentHTML("afterend", "' .
+                        $leeloodiv . $leeloomodal . '")';
 
                     $PAGE->requires->js_init_code("$js2");
                 }

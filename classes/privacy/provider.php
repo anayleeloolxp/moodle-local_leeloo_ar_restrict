@@ -25,8 +25,6 @@
 
 namespace local_leeloo_ar_restrict\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy Subsystem for local_leeloo_ar_restrict implementing null_provider.
  *
